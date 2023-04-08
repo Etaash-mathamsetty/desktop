@@ -22,10 +22,10 @@ function getDefaultShells(): Shell {
   } else {
     getAvailableShells()
     // Wait for the shell cache to be populated
-    while(!shellCache) {
+    while (!shellCache) {
       console.log('waiting for shell cache to be populated')
     }
-    if(shellCache.length > 0) {
+    if (shellCache.length > 0) {
       return shellCache[0].shell
     }
     return Linux.Default
