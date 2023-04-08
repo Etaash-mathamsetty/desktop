@@ -12,18 +12,28 @@ export type Shell = Darwin.Shell | Win32.Shell | Linux.Shell
 
 export type FoundShell = IFoundShell<Shell>
 
-/** The default shell. */
-export const Default = (function () {
+let shellCache: ReadonlyArray<FoundShell> | null = null
+
+function getDefaultShells(): Shell {
   if (__DARWIN__) {
     return Darwin.Default
   } else if (__WIN32__) {
     return Win32.Default
   } else {
+    getAvailableShells()
+    // Wait for the shell cache to be populated
+    while(!shellCache) {
+      console.log('waiting for shell cache to be populated')
+    }
+    if(shellCache.length > 0) {
+      return shellCache[0].shell
+    }
     return Linux.Default
   }
-})()
+}
 
-let shellCache: ReadonlyArray<FoundShell> | null = null
+/** The default shell. */
+export const Default = getDefaultShells()
 
 /** Parse the label into the specified shell type. */
 export function parse(label: string): Shell {

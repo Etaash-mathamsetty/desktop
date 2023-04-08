@@ -22,18 +22,7 @@ export enum Shell {
   LXTerminal = 'LXDE Terminal',
 }
 
-function getDefaultShell(): Shell {
-  getAvailableShells().then(shells => {
-    if (shells.length > 0) {
-      return shells[0].shell
-    } else {
-      return Shell.Gnome
-    }
-  })
-  return Shell.Gnome
-}
-
-export const Default = getDefaultShell()
+export const Default = Shell.Gnome
 
 export function parse(label: string): Shell {
   return parseEnumValue(Shell, label) ?? Default
